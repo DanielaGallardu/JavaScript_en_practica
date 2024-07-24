@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ejercicio 1</title>
+  </head>
+
+  <body>
+    <div>
+      <div style="width: 40%; margin: 0 auto">
+        <h2>Escríbenos !!!</h2>
+        <div class="resultado" style="color: green; font-style: italic"></div>
+        <form id="formulario">
+          <div>
+            <div style="display: flex; flex-direction: column">
+              <label> Nombre completo </label>
+              <input id="nombre" type="text" />
+              <p class="errorNombre" style="color: red; font-style: italic"></p>
+            </div>
+            <div style="display: flex; flex-direction: column">
+              <label> Asunto </label>
+              <input id="asunto" type="text" />
+              <p class="errorAsunto" style="color: red; font-style: italic"></p>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column">
+            <label> Mensaje </label>
+            <textarea id="mensaje"></textarea>
+            <p class="errorMensaje" style="color: red; font-style: italic"></p>
+          </div>
+          <div>
+            <button id="botton" type="submit">Envíar mensaje</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script>
+      // Selecciono formulario
+      let form = document.getElementById("formulario");
+  
+      form.addEventListener("submit", (event) => {
+          event.preventDefault(); // elimino comportamiento predestinado
+          limpiarError(); // limpio mensaje de error previos
+          // valores a los campos
+          let nombre = document.getElementById("nombre").value;
+          let asunto = document.getElementById("asunto").value;
+          let mensaje = document.getElementById("mensaje").value;
+          // valido con funcion 
+          const esValido = validacionDatos(nombre, asunto, mensaje);
+  
+          if (esValido) {
+              document.querySelector('.resultado').innerText = 'Mensaje enviado con éxito!';
+              limpiarCampos();  // Si los datos son válidos, muestra un mensaje de éxito y limpia los errores y campos
+          }
+      });
+  
+      // funcion ValidarDatos
+      function validacionDatos(nombre, asunto, mensaje) {
+          const regEx = /^[A-Z\s]+$/i; // Expresión regular solo caracteres alfabéticos y espacios 
+          const nombreValido = regEx.test(nombre);
+          const asuntoValido = regEx.test(asunto);
+          const mensajeValido = regEx.test(mensaje);
+  
+          if (!nombreValido) {
+              document.querySelector(".errorNombre").innerText = 'Nombre debe contener solo caracteres alfabéticos';
+          }
+          if (!asuntoValido) {
+              document.querySelector(".errorAsunto").innerText = 'Asunto debe contener solo caracteres alfabéticos';
+          }
+          if (!mensajeValido) {
+              document.querySelector(".errorMensaje").innerText = 'Mensaje debe contener solo caracteres alfabéticos';
+          }
+          
+          return nombreValido && asuntoValido && mensajeValido;
+      }
+  
+      function limpiarError() {
+          document.querySelector(".errorNombre").innerText = "";
+          document.querySelector(".errorAsunto").innerText = "";
+          document.querySelector(".errorMensaje").innerText = "";
+      }
+  
+      function limpiarCampos() {
+          document.getElementById("nombre").value = "";
+          document.getElementById("asunto").value = "";
+          document.getElementById("mensaje").value = "";
+      }
+  
+      // Limpiar el mensaje de éxito al comenzar a escribir en los campos
+      document.getElementById("nombre").addEventListener("input", limpiarMensajeExito);
+      document.getElementById("asunto").addEventListener("input", limpiarMensajeExito);
+      document.getElementById("mensaje").addEventListener("input", limpiarMensajeExito);
+  
+      function limpiarMensajeExito() {
+          document.querySelector('.resultado').innerText = "";
+      }
+  </script>
+  </body>
+</html>
